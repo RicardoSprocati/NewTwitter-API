@@ -1,0 +1,69 @@
+# ---------------------
+# Python / Django
+# ---------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+
+# Virtual env
+.venv/
+env/
+venv/
+
+# Poetry
+poetry.lock
+
+# Django
+db.sqlite3
+*.log
+media/
+staticfiles/
+
+# Migrations 
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Configurações locais
+.env
+*.env
+
+# ---------------------
+# Node / React
+# ---------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Build outputs
+build/
+dist/
+.cache/
+out/
+
+# React testing
+coverage/
+*.lcov
+
+# ---------------------
+# Docker
+# ---------------------
+*.pid
+*.seed
+*.bak
+docker-compose.override.yml
+
+# ---------------------
+# IDEs e editores
+# ---------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+*.swp
+*~
