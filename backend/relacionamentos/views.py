@@ -30,7 +30,7 @@ class ListaSeguidoresView(generics.ListAPIView):
         return Seguir.objects.filter(seguido=usuario).select_related("seguidor")
 
 
-class ListaSeguindoView(generics.ListaAPIView):
+class ListaSeguindoView(generics.ListAPIView):
     serializer_class = SeguirSerializer
 
     def get_queryset(self):

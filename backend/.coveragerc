@@ -1,0 +1,17 @@
+[run]
+branch = True
+source =
+    usuarios
+    relacionamentos
+    postagens
+
+
+disable_warnings = True
+
+
+[report]
+omit =
+    */tests/*
+    */migrations/*
+show_missing = True
+skip_covered = True
