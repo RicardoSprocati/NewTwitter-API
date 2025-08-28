@@ -1,0 +1,22 @@
+[
+    {
+        "model": "usuarios.usuario",
+        "pk": 1,
+        "fields": {
+            "username": "ricardo",
+            "email": "ricardo@example.com",
+            "display_name": "Ricardo",
+            "password": "pbkdf2_sha256$600000$demo$hashaqui"
+        }
+    },
+    {
+        "model": "usuarios.usuario",
+        "pk": 2,
+        "fields": {
+            "username": "vanessa",
+            "email": "vanessa@example.com",
+            "display_name": "Vanessa",
+            "password": "pbkdf2_sha256$600000$demo$hashaqui"
+        }
+    }
+]

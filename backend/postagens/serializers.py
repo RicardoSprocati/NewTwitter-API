@@ -3,7 +3,7 @@ from .models import Postagem, Curtida, Comentario
 
 
 class ComentarioSerializer(serializers.ModelSerializer):
-    autor_username = serializers.Charfield(source="autor.username", read_only=True)
+    autor_username = serializers.CharField(source="autor.username", read_only=True)
 
     class Meta:
         model = Comentario
@@ -12,7 +12,7 @@ class ComentarioSerializer(serializers.ModelSerializer):
 
 
 class PostagemSerializer(serializers.ModelSerializer):
-    autor_username = serializers.Charfield(source="autor.username", read_only=True)
+    autor_username = serializers.CharField(source="autor.username", read_only=True)
     qtd_curtidas = serializers.IntegerField(source="curtidas.count", read_only=True)
 
     class Meta:
@@ -34,7 +34,7 @@ class PostagemSerializer(serializers.ModelSerializer):
         return value
 
 
-class CurtidasSerializer(serializers.ModelSerializer):
+class CurtidaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Curtida
         fields = ("id", "usuario", "postagem", "criado_em")

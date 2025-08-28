@@ -12,8 +12,8 @@ class Seguir(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_togueder = ("seguidor", "seguido")
-        constraint = [
+        unique_together  = ("seguidor", "seguido")
+        constraints  = [
             models.CheckConstraint(
                 check=~models.Q(seguidor=models.F("seguido")),
                 name="não_seguir_a_si_mesmo",

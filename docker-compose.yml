@@ -16,7 +16,7 @@ api:
   build: ./backend/app
   command: python manage.py runserver 0.0.0.0:8000
   environment:
-    AMBIENTE: producao
+    AMBIENTE: desenvolvimento
     DEPURACAO: "true"
     PG_NOME: newtwitter
     PG_USUARIO: postgres

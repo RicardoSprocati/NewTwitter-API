@@ -9,7 +9,7 @@ from .views import (
     ComentarioExcluiView,
 )
 
-urlpattens = [
+urlpatterns = [
     # Posts
     path("posts/", PostagemListaCriaView.as_view(), name="listar_criar_postagem"),
     path("posts/<int:pk>/", PostagemDetalheView.as_view(), name="detalhe_postagem"),
