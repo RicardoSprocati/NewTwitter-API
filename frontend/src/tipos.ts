@@ -26,3 +26,17 @@ export type Comentario = {
     conteudo: string
     criado_em: string
 }
+
+export type UsuarioBasico = { 
+    username: string
+    display_name?: string
+    avatar?: string
+}
+
+export type SeguirItem = {
+    id: number
+    seguidor: number
+    seguido: number
+    seguidor_username?: string
+    seguido_username?: string
+}

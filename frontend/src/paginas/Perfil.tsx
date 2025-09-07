@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import cliente from '../api/cliente'
 import type { Usuario } from '../tipos'
+import { FormPerfil, Avatar } from './Perfil.estilo'
 
 export default function Perfil() {
     const [perfil, setPerfil] = useState<Usuario | null>(null)
@@ -28,13 +29,13 @@ export default function Perfil() {
 
     if (!perfil) return null
     return (
-        <form onSubmit={salvar}>
+        <FormPerfil onSubmit={salvar}>
             <h1>Meu Perfil</h1>
-            {perfil.avatar && <img src={perfil.avatar} width={80}/>}
+            {perfil.avatar && <Avatar src={perfil.avatar} width={80}/>}
             <input placeholder='Nome de exibição' value={display_name} onChange={(e) => setDisplay_name(e.target.value)} />
             <textarea placeholder='Sua Bio...' value={bio} onChange={(e) => setBio(e.target.value)}></textarea>
             <input type="file" onChange={(e) => setAvatar(e.target.files?.[0] || null)} />
             <button>Salvar</button>
-        </form>
+        </FormPerfil>
     )
 }

@@ -1,5 +1,6 @@
 import cliente from '../api/cliente'
 import { useState } from 'react'
+import { LikeButton } from './BotaoCurtir.estilo'
 
 export default function BotaoCurtir({postagemId, qtd}:{postagemId: number, qtd: number}) {
 
@@ -18,5 +19,5 @@ export default function BotaoCurtir({postagemId, qtd}:{postagemId: number, qtd: 
         } catch (e) {console.error(e)}
     }
 
-    return <button onClick={alternar}>{curtiu ? 'Descurtir' : 'Curtir'} ({count})</button>
+    return <LikeButton onClick={alternar}>{curtiu ? 'Descurtir' : 'Curtir'} ({count})</LikeButton>
 }

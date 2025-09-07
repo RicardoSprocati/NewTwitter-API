@@ -1,13 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ProvedorAutenticacao } from './contexto/AutenticacaoContexto.tsx'
 import { RouterProvider } from 'react-router-dom'
-import rotas from './rotas.tsx'
+import { ThemeProvider } from 'styled-components'
+import { ProvedorAutenticacao } from './contexto/AutenticacaoContexto'
+import rotas from './rotas'
+import { tema } from './estilos/tema'
+import { GlobalStyle } from './estilos/GlobalStyle'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ProvedorAutenticacao>
-      <RouterProvider router={rotas} />
-    </ProvedorAutenticacao>
-  </React.StrictMode>,
+    <ThemeProvider theme={tema}>
+      <GlobalStyle theme={tema} />
+      <ProvedorAutenticacao>
+        <RouterProvider router={rotas} />
+      </ProvedorAutenticacao>
+    </ThemeProvider>
+  </React.StrictMode>
 )
+

@@ -4,6 +4,7 @@ import cliente from '../api/cliente'
 import type { Postagem } from '../tipos'
 import type { AxiosError } from 'axios'
 import ListaComentarios from '../componentes/ListaComentarios'
+import { DetalheWrapper, Titulo, Texto } from './PostagemDetalhe.estilo'
 
 export default function PostagemDetalhe() {
     const { id } = useParams<{ id: string }>()
@@ -51,10 +52,10 @@ export default function PostagemDetalhe() {
     if (!post) return null
 
     return (
-        <div>
-            <h2>@{post.autor_username}</h2>
-            <p>{post.conteudo}</p>
+        <DetalheWrapper>
+            <Titulo>@{post.autor_username}</Titulo>
+            <Texto>{post.conteudo}</Texto>
             <ListaComentarios postagemId={post.id} />
-        </div>
+        </DetalheWrapper>
     )
 }

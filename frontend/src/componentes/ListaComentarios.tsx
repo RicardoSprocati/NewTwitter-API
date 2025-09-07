@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import cliente from '../api/cliente'
 import type { Comentario } from '../tipos'
+import { Wrapper, Form, Lista, Item } from './ListaComentarios.estilo'
 
 export default function ListaComentarios({postagemId}: {postagemId: number}) {
 
@@ -26,18 +27,18 @@ export default function ListaComentarios({postagemId}: {postagemId: number}) {
     }
 
     return (
-        <div>
-            <form onSubmit={enviar}>
+        <Wrapper>
+            <Form onSubmit={enviar}>
                 <input value={texto} onChange={(e) => setTexto(e.target.value)} placeholder='Escreva um comentario' />
                 <button>Comentar</button>
-            </form>
-            <ul>
+            </Form>
+            <Lista>
                 {comentarios.map((c) => (
-                    <li key={c.id}>
+                    <Item key={c.id}>
                         <strong>@{c.autor_username}</strong>: {c.conteudo}
-                    </li>
+                    </Item>
                 ))}
-            </ul>
-        </div>
+            </Lista>
+        </Wrapper>
     )
 }

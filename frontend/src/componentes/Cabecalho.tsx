@@ -1,22 +1,26 @@
-import { Link } from 'react-router-dom'
+
 import { useAuth } from '../contexto/AutenticacaoContexto'
+import { Header,Nav,NavLink,Acoes } from './Cabecalho.estilo'
 
 export default function Cabecalho() {
     const {autenticado, deslogar} = useAuth()
 
     return (
-        <header>
-            <nav>
-                <Link to="/">Feed</Link>
-                <Link to="/perfil">Perfil</Link>
-            </nav>
-            <div>
+        <Header>
+            <Nav>
+                <NavLink to="/">Feed</NavLink>
+                <NavLink to="/perfil">Perfil</NavLink>
+            </Nav>
+            <Acoes>
                 {autenticado ? (
                     <button onClick={deslogar}>Sair</button>
                 ) : (
-                    <Link to="/entrar">Entrar</Link>
+                    <>
+                        <NavLink to="/entrar">Entrar</NavLink>
+                        <NavLink to="/registrar">Registrar</NavLink>
+                    </>
                 )}
-            </div>
-        </header>
+            </Acoes>
+        </Header>
     )
 }

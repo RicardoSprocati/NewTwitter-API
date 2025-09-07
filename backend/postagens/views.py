@@ -32,8 +32,11 @@ class FeedView(generics.ListAPIView):
         seguindo_ids = Seguir.objects.filter(seguidor=self.request.user).values_list(
             "seguido_id", flat=True
         )
+
+        ids = list(seguindo_ids) + [self.request.user.id]
+
         return (
-            Postagem.objects.filter(autor_id__in=seguindo_ids)
+            Postagem.objects.filter(autor_id__in=ids)
             .select_related("autor")
             .order_by("-criado_em")
         )

@@ -1,17 +1,15 @@
 import { Outlet } from 'react-router-dom'
 import Cabecalho from './componentes/Cabecalho'
+import { AppWrapper } from './App.estilo'
 
-function App() {
-  
-
+export default function App() {
   return (
-    <div>
+    <AppWrapper>
       <Cabecalho />
       <main>
         <Outlet />
       </main>
-    </div>
+    </AppWrapper>
   )
 }
 
-export default App

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { registrar } from '../api/auth'
+import { FormRegistro } from './Registrar.estilo'
 
 export default function Registrar() {
     const [username, setUsername] = useState('')
@@ -14,13 +15,13 @@ export default function Registrar() {
     }
 
     return (
-        <form onSubmit={enviar}>
+        <FormRegistro onSubmit={enviar}>
             <h1>Registrar</h1>
             <input placeholder='Usuário' value={username} onChange={(e) => setUsername(e.target.value)} />
             <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <input placeholder="Nome de exibição" value={display_name} onChange={(e) => setDisplay_name(e.target.value)} />
             <input placeholder="Senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
             <button>Registrar</button>
-        </form>
+        </FormRegistro>
     )
 }

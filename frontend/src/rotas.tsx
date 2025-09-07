@@ -6,6 +6,7 @@ import Perfil from './paginas/Perfil'
 import PostagemDetalhe from './paginas/PostagemDetalhe'
 import RotaProtegida from './componentes/RotaProtegida'
 import App from './App'
+import PerfilPublico from './paginas/PerfilPublico'
 
 const rotas = createBrowserRouter([
     {
@@ -16,7 +17,8 @@ const rotas = createBrowserRouter([
             {path: 'perfil', element: <RotaProtegida><Perfil/></RotaProtegida>},
             { path: 'post/:id', element: <RotaProtegida><PostagemDetalhe/></RotaProtegida> },
             { path: 'entrar', element: <Entrar/> },
-            { path: 'registrar', element: <Registrar/> }
+            { path: 'registrar', element: <Registrar/> },
+            { path: 'u/:username', element: <RotaProtegida><PerfilPublico/></RotaProtegida>}
         ]
     }
 ])
