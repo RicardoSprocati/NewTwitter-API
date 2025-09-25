@@ -15,27 +15,58 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend/app
+        working-directory: backend
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
+
+      - name: System deps for psycopg2 etc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev build-essential python3-dev
+
       - name: Install Poetry
         run: pip install poetry==1.8.3
+
+      - name: Use in-project venv
+        run: poetry config virtualenvs.in-project true
+
+      - name: Cache Poetry venv
+        uses: actions/cache@v4
+        with:
+          path: backend/.venv
+          key: poetry-venv-${{ runner.os }}-${{ hashFiles('backend/poetry.lock') }}
+          restore-keys: |
+            poetry-venv-${{ runner.os }}-
+
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
+
       - name: Lint (ruff/black/isort)
         run: |
           poetry run ruff check .
           poetry run black --check .
           poetry run isort --check-only .
+
+      # Se seu settings exige login por padrão, seus testes devem autenticar.
+      # Aqui só garantimos o Django configurado e o DB pronto.
+      - name: Migrate (SQLite em dev)
+        env:
+          AMBIENTE: desenvolvimento
+          DEPURACAO: "true"
+          DJANGO_SETTINGS_MODULE: "newtwitter.settings"   # <-- ajuste se o módulo for outro
+        run: poetry run python manage.py migrate --noinput
+
       - name: Run tests (pytest + coverage)
         env:
           AMBIENTE: desenvolvimento
           DEPURACAO: "true"
+          DJANGO_SETTINGS_MODULE: "newtwitter.settings"   # <-- ajuste se preciso
         run: poetry run pytest
+
+
 
   frontend:
     name: Frontend (Vite/React)
@@ -55,4 +86,5 @@ jobs:
       - name: Build
         env:
           VITE_API_URL: http://localhost:8000/api
+          NODE_OPTIONS: --max_old_space_size=4096
         run: npm run build
