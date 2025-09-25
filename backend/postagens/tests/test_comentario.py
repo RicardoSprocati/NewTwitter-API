@@ -1,7 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from ..models import Postagem, Comentario
+from postagens.models import Postagem, Comentario
 
 Usuario = get_user_model()
 
