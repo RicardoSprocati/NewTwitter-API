@@ -44,11 +44,17 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Lint (ruff/black/isort)
+      - name: Lint & Format (ruff/black/isort) — apply fixes
+        run: |
+          poetry run ruff check . --fix
+          poetry run isort .
+          poetry run black .
+
+      - name: Lint verify (ruff/black/isort) — check clean
         run: |
           poetry run ruff check .
-          poetry run black --check .
           poetry run isort --check-only .
+          poetry run black --check .
 
       # Se seu settings exige login por padrão, seus testes devem autenticar.
       # Aqui só garantimos o Django configurado e o DB pronto.
