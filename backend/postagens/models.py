@@ -27,7 +27,12 @@ class Curtida(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("usuario", "postagem")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["usuario", "postagem"],
+                name="unico_like_usuario_postagem"
+            )
+    ]
 
 
 class Comentario(models.Model):
@@ -40,3 +45,11 @@ class Comentario(models.Model):
 
     class Meta:
         ordering = ("criado_em",)
+
+class CurtidaComentario(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comentario = models.ForeignKey(Comentario, on_delete=models.CASCADE, related_name="curtidas")
+    criado_em = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("usuario", "comentario")

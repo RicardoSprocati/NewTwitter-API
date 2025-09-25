@@ -19,3 +19,9 @@ export function sair() {
     localStorage.removeItem('token_acesso')
     localStorage.removeItem('token_refresh')
 }
+
+export async function trocarSenha(payload: {senha_atual: string; nova_senha: string}) {
+
+    const {data} = await cliente.post('/auth/change-password/', payload)
+    return data as {detalhe: string}
+}

@@ -8,7 +8,7 @@ Rede social estilo Twitter construída com **Django REST Framework + JWT** no ba
 - Registro, login e refresh de token
 - Perfil com avatar, display name e bio
 - Seguir/Deixar de seguir usuários
-- Postagens (texto até 280 caracteres, mídia opcional)
+- Postagens (texto até 280 caracteres)
 - Feed com posts de seguidos
 - Curtidas e comentários
 

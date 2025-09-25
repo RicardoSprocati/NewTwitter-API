@@ -1,10 +1,10 @@
 from django.urls import path
 from .views import (
+    ComentarioLikeToggleView,
+    LikeToggleView,
     PostagemListaCriaView,
     PostagemDetalheView,
     FeedView,
-    CurtirView,
-    DescurtirView,
     ComentarioListaCriaView,
     ComentarioExcluiView,
 )
@@ -15,10 +15,9 @@ urlpatterns = [
     path("posts/<int:pk>/", PostagemDetalheView.as_view(), name="detalhe_postagem"),
     path("feed/", FeedView.as_view(), name="feed_postagens"),
     # Likes
-    path("likes/", CurtirView.as_view(), name="curtir_postagem"),
-    path(
-        "likes/<int:postagem_id>/", DescurtirView.as_view(), name="descurtir_postagem"
-    ),
+    path("likes/", LikeToggleView.as_view(), name="likes_toggle"),
+    path("comentarios/like-toggle/", ComentarioLikeToggleView.as_view()),
+    
     # Comentários
     path(
         "posts/<int:postagem_id>/comentarios/",
