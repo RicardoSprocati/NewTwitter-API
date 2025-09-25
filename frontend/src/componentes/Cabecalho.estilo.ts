@@ -12,6 +12,10 @@ export const Header = styled.header`
     align-items: center;
     justify-content: space-between;
     padding: 8px ${({ theme }) => theme.espaco};
+
+    @media (max-width: 576px) {
+        width: 90%;
+    }
 `
 
 export const Nav = styled.nav`

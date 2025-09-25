@@ -40,8 +40,9 @@ class TrocaSenhaView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         usuario = request.user
+
         if not check_password(
-            serializer.validated_data["senha_atual"], usuario.passaword
+            serializer.validated_data["senha_atual"], usuario.password
         ):
             return Response({"detalhe": "Senha atual incorreta."}, status=400)
         usuario.set_password(serializer.validated_data["nova_senha"])
@@ -50,12 +51,16 @@ class TrocaSenhaView(generics.GenericAPIView):
     
 class BuscaUsuariosView(generics.ListAPIView):
     serializer_class = PerfilSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
         q = self.request.query_params.get("q", "").strip()
         if not q:
             return Usuario.objects.none()
-        return Usuario.objects.filter(
-            Q(username__icontains=q) | Q(display_name__icontains=q)
-        ).order_by("username")[:10]
+        
+        return (
+            Usuario.objects.filter(
+                Q(username__icontains=q) | Q(display_name__icontains=q)
+            )
+            .order_by("username")[:10]
+        )

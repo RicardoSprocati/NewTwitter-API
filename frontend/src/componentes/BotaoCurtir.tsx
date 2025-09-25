@@ -2,22 +2,26 @@ import cliente from '../api/cliente'
 import { useState } from 'react'
 import { LikeButton } from './BotaoCurtir.estilo'
 
-export default function BotaoCurtir({postagemId, qtd}:{postagemId: number, qtd: number}) {
+
+export default function BotaoCurtir({postagemId, qtd, curtidoInicial= false}:{postagemId: number, qtd: number, curtidoInicial?:boolean}) {
 
     const [count, setCount] = useState(qtd)
-    const [curtiu, setCurtiu] = useState(false)
+    const [curtiu, setCurtiu] = useState(curtidoInicial)
 
     async function alternar() {
         try {
-            if (!curtiu) {
-                await cliente.post('/likes', {postagem: postagemId})
-                setCount((c) => c + 1); setCurtiu(true)
-            } else {
-                await cliente.delete(`/likes/${postagemId}`)
-                setCount((c) => Math.max(0,c - 1)); setCurtiu(false)
-            }
-        } catch (e) {console.error(e)}
+            const { data } = await cliente.post('/likes/', { postagem: postagemId })
+            // backend já diz se ficou curtido ou não
+            setCurtiu(data.liked)
+            setCount((c) => (data.liked ? c + 1 : Math.max(0, c - 1)))
+        } catch (e) {
+            console.error(e)
+        }
     }
 
-    return <LikeButton onClick={alternar}>{curtiu ? 'Descurtir' : 'Curtir'} ({count})</LikeButton>
+    return (
+        <LikeButton onClick={alternar}>
+            {curtiu ? 'Descurtir' : 'Curtir'} ({count})
+        </LikeButton>
+    )
 }

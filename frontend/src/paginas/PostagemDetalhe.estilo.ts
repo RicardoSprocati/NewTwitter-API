@@ -14,4 +14,6 @@ export const Titulo = styled.h2`
 
 export const Texto = styled.p`
     margin: 0 0 12px;
+    word-wrap: break-word;     
+    overflow-wrap: break-word;
 `

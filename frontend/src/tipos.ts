@@ -1,6 +1,7 @@
 export type Usuario = {
+    id: number
     username: string
-    email: string
+    email?: string
     display_name?: string
     avatar?: string
     bio?: string
@@ -15,6 +16,9 @@ export type Postagem = {
     midia?: string
     criado_em: string
     qtd_curtidas: number
+    curtido_por_mim:boolean
+    pode_comentar?: boolean
+    autor_avatar?: string 
 }
 
 
@@ -25,6 +29,9 @@ export type Comentario = {
     postagem: number
     conteudo: string
     criado_em: string
+    qtd_curtidas: number
+    curtido_por_mim:boolean
+    autor_avatar?: string 
 }
 
 export type UsuarioBasico = { 
@@ -39,4 +46,15 @@ export type SeguirItem = {
     seguido: number
     seguidor_username?: string
     seguido_username?: string
+    seguidor_avatar?: string
+    seguido_avatar?: string
 }
+
+export type FormInputs = {
+    username: string
+    email: string
+    display_name?: string
+    senha: string
+}
+
+export type AbaTipo = "seguindo" | "seguidores"

@@ -5,9 +5,9 @@ import {
     Caixa, BuscaWrap, CampoBusca, Sugestoes, Sugestao,
     Abas, Aba, ListaUsuarios, ItemUsuario, Aviso
 } from "./SidebarFeed.estilo"
-import type { SeguirItem, UsuarioBasico } from "../tipos"
+import type { AbaTipo, SeguirItem, UsuarioBasico } from "../tipos"
 
-type AbaTipo = "seguindo" | "seguidores"
+
 
 export default function SidebarFeed() {
     const [eu, setEu] = useState<UsuarioBasico | null>(null)
@@ -20,7 +20,7 @@ export default function SidebarFeed() {
     const [carregandoSugestao, setCarregandoSugestao] = useState(false)
 
     useEffect(() => {
-        cliente.get("/users/me").then(({data}) => setEu(data))
+        cliente.get("/users/me/").then(({data}) => setEu(data))
     }, [])
 
     useEffect(() => {

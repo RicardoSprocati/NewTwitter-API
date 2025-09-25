@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
+from rest_framework import status
 from .models import Seguir
 from .serializers import SeguirSerializer
 from rest_framework.response import Response
@@ -11,15 +12,25 @@ Usuario = get_user_model()
 class SeguirView(generics.CreateAPIView):
     queryset = Seguir.objects.all()
     serializer_class = SeguirSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
 class DeixarDeSeguirView(generics.DestroyAPIView):
     serializer_class = SeguirSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         seguido_username = self.kwargs["username"]
         seguido = Usuario.objects.get(username=seguido_username)
         return Seguir.objects.get(seguidor=self.request.user, seguido=seguido)
+    
+    def delete(self, request, *args, **kwargs):
+        try:
+            obj = self.get_object()
+        except (Usuario.DoesNotExist, Seguir.DoesNotExist):
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ListaSeguidoresView(generics.ListAPIView):

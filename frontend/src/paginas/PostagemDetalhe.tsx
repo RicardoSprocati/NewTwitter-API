@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import cliente from '../api/cliente'
 import type { Postagem } from '../tipos'
 import type { AxiosError } from 'axios'
@@ -20,7 +20,7 @@ export default function PostagemDetalhe() {
         try {
             setErro(null)
             setLoading(true)
-            const { data } = await cliente.get<Postagem>(`/post/${id}/`, { signal })
+            const { data } = await cliente.get<Postagem>(`/posts/${id}/`, { signal })
             setPost(data)
         } catch (e: unknown) {
             if (signal?.aborted) return
@@ -53,9 +53,13 @@ export default function PostagemDetalhe() {
 
     return (
         <DetalheWrapper>
-            <Titulo>@{post.autor_username}</Titulo>
+            <Titulo>
+                <Link to={`/u/${post.autor_username}`}>
+                    @{post.autor_username}
+                </Link>
+            </Titulo>
             <Texto>{post.conteudo}</Texto>
-            <ListaComentarios postagemId={post.id} />
+            <ListaComentarios postagemId={post.id} podeComentar={!!post.pode_comentar}/>
         </DetalheWrapper>
     )
 }

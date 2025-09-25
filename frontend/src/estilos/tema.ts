@@ -13,7 +13,7 @@ export const tema = {
     },
     raio: "14px",
     sombra: "0 4px 14px rgba(0,0,0,.25)",
-    colunaMax: "620px",
+    colunaMax: "100vh",
     espaco: "14px",
     espacoLg: "18px",
 }

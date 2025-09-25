@@ -9,18 +9,22 @@ class RegistroSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = ("username", "email", "display_name", "senha")
 
-        def create(self, validated_data):
-            senha = validated_data.pop("senha")
-            usuario = Usuario(**validated_data)
-            usuario.set_password(senha)
-            usuario.save()
-            return usuario
+    def validate_senha(self, value):
+        validate_password(value)
+        return value
+
+    def create(self, validated_data):
+        senha = validated_data.pop("senha")
+        usuario = Usuario(**validated_data)
+        usuario.set_password(senha)
+        usuario.save()
+        return usuario
 
 
 class PerfilSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ("username", "email", "display_name", "avatar", "bio")
+        fields = ("id","username", "email", "display_name", "avatar", "bio")
         read_only_fields = ("username",)
 
 
