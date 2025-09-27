@@ -31,7 +31,7 @@ def test_criar_e_remover_curtida():
     # existe curtida no banco
     assert Curtida.objects.filter(usuario=curtir_usuario, postagem=post).exists() is True
 
-    # descurtir (toggle OFF) → **POST de novo**, agora 200
+    # descurtir 
     resp = c.post("/api/likes/", {"postagem": post.id}, format="json")
     assert resp.status_code == 200
 

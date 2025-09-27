@@ -26,7 +26,7 @@ def test_criar_listar_e_excluir_comentario():
     ).json()["access"]
     c.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
-    # bob precisa seguir a alice para poder comentar (regra da sua view)
+    # bob precisa seguir a alice para poder comentar 
     Seguir.objects.create(seguidor=comentarista, seguido=autor)
 
     # cria comentário na rota aninhada
