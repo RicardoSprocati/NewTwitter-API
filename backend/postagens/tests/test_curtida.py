@@ -1,47 +1,40 @@
 import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from ..models import Postagem, Curtida
+
+from postagens.models import Postagem, Curtida
 
 Usuario = get_user_model()
 
-
 @pytest.mark.django_db
 def test_criar_e_remover_curtida():
-
-    #  Cria dois usuários
-
+    # cria usuários
     autor = Usuario.objects.create_user(username="alice", password="Senha123!")
     curtir_usuario = Usuario.objects.create_user(username="bob", password="Senha123!")
 
-    # Cria uma postagem de alice
-
+    # cria post
     post = Postagem.objects.create(autor=autor, conteudo="Olá mundo!")
 
-    # Login de bob
-
+    # login do bob
     c = APIClient()
     token = c.post(
-        "/api/auth/login/", {"username": "bob", "password": "Senha123!"}, format="json"
+        "/api/auth/login/",
+        {"username": "bob", "password": "Senha123!"},
+        format="json",
     ).json()["access"]
     c.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
-    # Curtir a postagem
-
+    # curtir (toggle ON) → 201
     resp = c.post("/api/likes/", {"postagem": post.id}, format="json")
     assert resp.status_code == 201
 
-    # Verifica se o like realmente foi criado no banco
+    # existe curtida no banco
+    assert Curtida.objects.filter(usuario=curtir_usuario, postagem=post).exists() is True
 
-    curtida = Curtida.objects.filter(usuario=curtir_usuario, postagem=post)
-    assert curtida.exists() is True
+    # descurtir 
+    resp = c.post("/api/likes/", {"postagem": post.id}, format="json")
+    assert resp.status_code == 200
 
-    #  Descurtir a postagem
+    # não existe mais curtida
+    assert Curtida.objects.filter(usuario=curtir_usuario, postagem=post).exists() is False
 
-    resp = c.delete(f"/api/likes/{post.id}/")
-    assert resp.status_code == 204
-
-    # Verifica se o like foi removido
-
-    curtida = Curtida.objects.filter(usuario=curtir_usuario, postagem=post)
-    assert curtida.exists() is False
