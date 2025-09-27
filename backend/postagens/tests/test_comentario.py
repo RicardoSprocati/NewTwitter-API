@@ -26,10 +26,10 @@ def test_criar_listar_e_excluir_comentario():
     ).json()["access"]
     c.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
-    # bob passa a seguir a alice (regra da sua view para poder comentar)
+    # bob precisa seguir a alice para poder comentar (regra da sua view)
     Seguir.objects.create(seguidor=comentarista, seguido=autor)
 
-    # cria comentário na postagem da alice
+    # cria comentário na rota aninhada
     resp = c.post(
         f"/api/posts/{post.id}/comentarios/",
         {"conteudo": "Muito legal!"},
@@ -38,15 +38,15 @@ def test_criar_listar_e_excluir_comentario():
     assert resp.status_code == 201
     comentario_id = resp.json()["id"]
 
-    # lista comentários e verifica se o criado está lá
+    # lista comentários da postagem
     resp = c.get(f"/api/posts/{post.id}/comentarios/")
     assert resp.status_code == 200
     comentarios = resp.json()
     assert any(cm["id"] == comentario_id for cm in comentarios)
 
-    # exclui o comentário do próprio bob (rota da sua ComentarioExcluiView)
-    resp = c.delete(f"/api/comentarios/{comentario_id}/")
+    # exclui o comentário do bob usando a rota aninhada existente
+    resp = c.delete(f"/api/posts/{post.id}/comentarios/{comentario_id}/")
     assert resp.status_code in (200, 204)
 
-    # garante que o comentário sumiu
-    assert Comentario.objects.filter(id=comentario_id).exists() is False
+    # confirma que o comentário sumiu
+    assert not Comentario.objects.filter(id=comentario_id).exists()
