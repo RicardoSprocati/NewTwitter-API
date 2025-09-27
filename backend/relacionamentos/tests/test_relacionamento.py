@@ -10,7 +10,7 @@ Usuario = get_user_model()
 def test_relacionamento_seguir():
     # --- Criar dois usuários ---
     alice = Usuario.objects.create_user(username="alice", password="Senha123!")
-    bob = Usuario.objects.create_user(username="bob", password="Senha123!")
+    bob   = Usuario.objects.create_user(username="bob",   password="Senha123!")
 
     # --- Simular login de Alice ---
     client = APIClient()
@@ -21,23 +21,19 @@ def test_relacionamento_seguir():
     ).json()["access"]
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
-    # --- Alice segue Bob ---
+    # --- Alice segue Bob 
     resp = client.post("/api/follow/", {"seguido": bob.id}, format="json")
     assert resp.status_code == 201
+    assert Seguir.objects.filter(seguidor=alice, seguido=bob).exists() is True
 
-    # --- Verificar no banco que a relação foi criada ---
-    relacao = Seguir.objects.get(seguidor=alice, seguido=bob)
-    assert relacao.seguidor == alice
-    assert relacao.seguido == bob
-
-    # --- Listar seguidores de Bob ---
+    # --- Listar seguidores de Bob
     resp = client.get(f"/api/followers/{bob.username}/")
     assert resp.status_code == 200
     seguidores = resp.json()
     assert any(s["seguidor"] == alice.id for s in seguidores)
 
-    # --- Alice deixa de seguir Bob ---
-    resp = client.post(f"/api/unfollow/{bob.username}/")
+    # --- Alice deixa de seguir Bob 
+    resp = client.delete(f"/api/unfollow/{bob.username}/")
     assert resp.status_code in (200, 204)
-    assert not Seguir.objects.filter(seguidor=alice, seguido=bob).exists()
+    assert Seguir.objects.filter(seguidor=alice, seguido=bob).exists() is False
 
