@@ -22,6 +22,9 @@ if AMBIENTE == "producao":
             "PASSWORD": os.getenv("PG_SENHA", "postgres"),
             "HOST": os.getenv("PG_HOST", "db"),
             "PORT": int(os.getenv("PG_PORTA", 5432)),
+            "OPTIONS": {
+                "sslmode": "require",
+            },
         }
     }
 else:

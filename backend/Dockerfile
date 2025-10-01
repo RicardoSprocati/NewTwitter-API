@@ -1,19 +1,32 @@
-FROM python:3.12-slim AS builder
-WORKDIR /app
-ENV POETRY_VERSION=1.8.3
-RUN pip install --no-cache-dir poetry==${POETRY_VERSION}
-COPY pyproject.toml poetry.lock* ./
-RUN poetry export -f requirements.txt --without-hashes -o requirements.txt
+FROM python:3.11-slim
 
-
-# Runtime
-FROM python:3.12-slim
-WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
-PYTHONUNBUFFERED=1
-COPY --from=builder /app/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
-RUN python manage.py collectstatic --noinput || true
+    PYTHONUNBUFFERED=1 \
+    POETRY_VERSION=1.8.3 \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=true \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+# Pacotes de sistema necessários (psycopg2 e builds)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libpq-dev curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Instalar Poetry
+RUN curl -sSL https://install.python-poetry.org | python -
+
+# Copiar manifestos primeiro para cache de dependências
+COPY pyproject.toml poetry.lock* /app/
+
+# Instalar só deps "main" (sem dev)
+RUN /root/.local/bin/poetry install --only main --no-root
+
+# Copiar o restante do código
+COPY . /app
+
+# Porta do gunicorn
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
