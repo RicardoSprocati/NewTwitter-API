@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // cria uma const que armazena a URL base
 const cliente = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api'
+    baseURL: import.meta.env.VITE_API_URL || 'http://ec2-18-118-173-210.us-east-2.compute.amazonaws.com/api'
 })
 
 // pega a senha e adiciona na requisição 
