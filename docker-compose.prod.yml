@@ -1,4 +1,3 @@
-version: "3.9"
 
 services:
   api:
@@ -9,9 +8,9 @@ services:
     env_file: ./backend.env
     working_dir: /app           
     command: >
-      sh -c "python manage.py migrate &&
-            python manage.py collectstatic --noinput || true &&
-            gunicorn newtwitter.wsgi:application --bind 0.0.0.0:8000"
+      sh -c "poetry run python manage.py migrate &&
+          poetry run python manage.py collectstatic --noinput || true &&
+          poetry run gunicorn newtwitter.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ./backend/midia:/app/midia
       - ./backend/static:/app/static
